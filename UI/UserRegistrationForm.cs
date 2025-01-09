@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-using SarasaviLibrary.Database;
+﻿using SarasaviLibrary.Database;
 using SarasaviLibrary.Models;
 
 namespace SarasaviLibrary.UI
@@ -19,17 +17,24 @@ namespace SarasaviLibrary.UI
         {
             string userNumber = TxtUserNumber.Text;
             string name = TxtName.Text;
+            string nationalId = TxtNationalId.Text;
+            string address = TxtAddress.Text;
+            string sex = CmbSex.SelectedItem?.ToString();
 
-            if (string.IsNullOrWhiteSpace(userNumber) || string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(userNumber) ||
+                string.IsNullOrWhiteSpace(name) ||
+                string.IsNullOrWhiteSpace(nationalId) ||
+                string.IsNullOrWhiteSpace(address) ||
+                string.IsNullOrWhiteSpace(sex))
             {
-                MessageBox.Show("Please fill in both User Number and Name.");
+                MessageBox.Show("Please fill in all fields.");
                 return;
             }
 
             // Check if the user already exists
-            if (_context.Users.Exists(u => u.UserNumber == userNumber))
+            if (_context.Users.Exists(u => u.UserNumber == userNumber || u.NationalId == nationalId))
             {
-                MessageBox.Show("A user with this number already exists.");
+                MessageBox.Show("A user with this number or National ID already exists.");
                 return;
             }
 
@@ -38,6 +43,9 @@ namespace SarasaviLibrary.UI
             {
                 UserNumber = userNumber,
                 Name = name,
+                NationalId = nationalId,
+                Address = address,
+                Sex = sex,
                 IsVisitor = false // Default: registered users are not visitors
             };
 
@@ -46,6 +54,9 @@ namespace SarasaviLibrary.UI
             MessageBox.Show($"User '{name}' has been registered successfully.");
             TxtUserNumber.Clear();
             TxtName.Clear();
+            TxtNationalId.Clear();
+            TxtAddress.Clear();
+            CmbSex.SelectedIndex = -1;
         }
     }
 }

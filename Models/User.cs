@@ -6,6 +6,7 @@
         public string Name { get; set; }
         public string NationalId { get; set; }
         public string Address { get; set; }
+        public string Sex { get; set; }
         public bool IsVisitor { get; set; }
         public List<Loan> Loans { get; set; }
 
